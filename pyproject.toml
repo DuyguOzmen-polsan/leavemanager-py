@@ -1,0 +1,40 @@
+[project]
+name = "leavemanager"
+version = "0.1.0"
+description = "LeaveManager - personel izin takip sistemi"
+requires-python = ">=3.12"
+dependencies = ["flask~=3.1"]
+
+[dependency-groups]
+dev = ["pytest~=9.2", "ruff~=0.17.4"]
+
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+# Single-module app today; the refactor spec switches this to packages.
+py-modules = ["app"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+target-version = "py312"
+extend-exclude = ["adapters"]
+
+[tool.ruff.lint]
+# BLE enforces docs/conventions.md "Error handling": no blind `except Exception`.
+select = ["E4", "E7", "E9", "F", "I", "B", "UP", "BLE", "RUF"]
+# Turkish comments and user texts are expected (docs/conventions.md, Language).
+allowed-confusables = ["ı", "İ"]
+
+[tool.ruff.lint.per-file-ignores]
+# Legacy baseline (bootstrap 2026-11-09): only the rules app.py violates today.
+# The refactor spec removes this entry — new code gets no exemptions.
+"app.py" = ["UP009", "I001", "RUF012", "BLE001", "UP031", "RUF015"]
+
+[tool.ruff.format]
+# Legacy baseline: app.py is formatted as part of the refactor, not by bootstrap.
+exclude = ["app.py"]
